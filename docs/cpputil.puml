@@ -1,0 +1,20 @@
+@startuml
+
+
+namespace cpputil {
+
+    class global {
+        .. io ..
+            void **read_array_from_file**(const std::string& filename, Eigen::MatrixXd& M)
+            void **read_array_from_file**(const std::string& filename, Eigen::Tensor<double, 4>& M)
+            void **print**(const Eigen::Tensor<double, 4>& T)
+        .. linear_algebra ..
+            bool **are_equal**(const Eigen::Tensor<double, 4>& M, const Eigen::Tensor<double, 4>& T, const double tolerance)
+            bool **are_equal_eigenvalues**(Eigen::VectorXd evals1, Eigen::VectorXd evals2, double tol)
+            bool **are_equal_eigenvectors**(Eigen::VectorXd evec1, Eigen::VectorXd evec2, double tol)
+            bool **are_equal_sets_eigenvectors**(Eigen::MatrixXd evecs1, Eigen::MatrixXd evecs2, double tol)
+    }
+
+}
+
+@enduml
