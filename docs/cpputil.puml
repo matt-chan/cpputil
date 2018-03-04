@@ -3,16 +3,17 @@
 
 namespace cpputil {
 
-    class global {
-        .. io ..
-            void **readArrayFromFile**(const std::string& filename, Eigen::MatrixXd& M)
-            void **readArrayFromFile**(const std::string& filename, Eigen::Tensor<double, 4>& M)
-            void **print**(const Eigen::Tensor<double, 4>& T)
-        .. linalg ..
-            bool **areEqual**(const Eigen::Tensor<double, 4>& M, const Eigen::Tensor<double, 4>& T, const double tolerance)
-            bool **areEqualEigenvalues**(Eigen::VectorXd evals1, Eigen::VectorXd evals2, double tol)
-            bool **areEqualEigenvectors**(Eigen::VectorXd evec1, Eigen::VectorXd evec2, double tol)
-            bool **areEqualSetsOfEigenvectors**(Eigen::MatrixXd evecs1, Eigen::MatrixXd evecs2, double tol)
+    class cpputil::io {
+        void **readArrayFromFile**(const std::string& filename, Eigen::MatrixXd& M)
+        void **readArrayFromFile**(const std::string& filename, Eigen::Tensor<double, 4>& M)
+        void **print**(const Eigen::Tensor<double, 4>& T)
+    }
+
+    class cpputil::linalg {
+        bool **areEqual**(const Eigen::Tensor<double, 4>& M, const Eigen::Tensor<double, 4>& T, const double tolerance)
+        bool **areEqualEigenvalues**(Eigen::VectorXd evals1, Eigen::VectorXd evals2, double tol)
+        bool **areEqualEigenvectors**(Eigen::VectorXd evec1, Eigen::VectorXd evec2, double tol)
+        bool **areEqualSetsOfEigenvectors**(Eigen::MatrixXd evecs1, Eigen::MatrixXd evecs2, double tol)
     }
 
 }
