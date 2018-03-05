@@ -10,6 +10,7 @@ compiler: gcc
 
 # Enable Slack notifications, disable e-mail
 notifications:
+    slack: gqcg:5PZ5ibXCwNU1b5ToWbHVIqnI
     email: false
 
 
@@ -42,7 +43,7 @@ before_install:
 
 # Run the build script
 script:
-  - cd /home/travis/build/lelemmen/cpputil
+  - cd /home/travis/build/GQCG/cpputil
   - mkdir build && cd build
   - cmake ..
   - make && make test && sudo make install
