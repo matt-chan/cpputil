@@ -5,54 +5,86 @@ namespace cpputil {
 namespace linalg {
 
 
-/** Return if two rank-4 tensors are approximately equal
+/**
+ *  Return if two rank-4 tensors @param: M and @param: T are approximately equal within a given @param: tolerance
+ *
+ *  This function is implemented because Eigen::Tensor does not have an isApprox yet.
  */
-bool areEqual(const Eigen::Tensor<double, 4>& M, const Eigen::Tensor<double, 4>& T, const double tolerance){
-    auto dim = M.dimension(0);
+bool areEqual(const Eigen::Tensor<double, 4>& M, const Eigen::Tensor<double, 4>& T, double tolerance) {
 
-    // Since Eigen::Tensor doesn't have an isApprox yet, we will check every pair of values manually
-    for (int i = 0; i < dim ; i++) {
-        for (int j = 0; j < dim; j++) {
-            for (int k = 0; k < dim; k++) {
-                for (int l = 0; l < dim; l++) {
+    // Check if the dimensions of the tensors are equal
+    const auto& dim_M = M.dimensions();
+    const auto& dim_T = T.dimensions();
+
+    for (size_t i = 0; i < 4; i++) {
+        if (dim_M[i] != dim_T[i]) {
+            throw std::invalid_argument("Cannot compare the two tensors as they have different dimensions.");
+        }
+    }
+
+
+    // Check every pair of values
+    for (size_t i = 0; i < dim_M[0] ; i++) {
+        for (size_t j = 0; j < dim_M[1]; j++) {
+            for (size_t k = 0; k < dim_M[2]; k++) {
+                for (size_t l = 0; l < dim_M[3]; l++) {
                     if (std::abs(M(i,j,k,l) - T(i,j,k,l)) > tolerance) {
                         return false;
                     }
                 }
             }
         }
-    } // rank-4 tensor traversing
+    }  // rank-4 tensor traversing
+
     return true;
 }
 
 
-/** Check if two sets of eigenvalues are equal
+/**
+ *  Check if two sets of eigenvalues @param: eigenvalues1 and @param: eigenvalues2 are equal within a given tolerance
  */
-bool areEqualEigenvalues(Eigen::VectorXd evals1, Eigen::VectorXd evals2, double tol) {
-    return evals1.isApprox(evals2, tol);
+bool areEqualEigenvalues(const Eigen::VectorXd& eigenvalues1, const Eigen::VectorXd& eigenvalues2, double tolerance) {
+    return eigenvalues1.isApprox(eigenvalues2, tolerance);
 }
 
 
-/** Check if two eigenvectors are equal. This is the case if they are equal up to their sign.
+/**
+ *  Check if two eigenvectors @param: eigenvectors1 and @param: eigenvectors2 are equal within a given @param: tolerance
  */
-bool areEqualEigenvectors(Eigen::VectorXd evec1, Eigen::VectorXd evec2, double tol) {
-    return (evec1.isApprox(evec2, tol) || evec1.isApprox(-evec2, tol));
+bool areEqualEigenvectors(const Eigen::VectorXd& eigenvectors1, const Eigen::VectorXd& eigenvectors2, double tolerance) {
+
+    //  Eigenvectors are equal if they are equal up to their sign.
+    return (eigenvectors1.isApprox(eigenvectors2, tolerance) || eigenvectors1.isApprox(-eigenvectors2, tolerance));
 }
 
 
-/** Check if two sets of eigenvectors are equal.
+/**
+ *  Check if two sets of eigenvectors (columns in @param: eigenvectors1 and @param: eigenvectors2) are equal within a given @param: tolerance
  */
-bool areEqualSetsOfEigenvectors(Eigen::MatrixXd evecs1, Eigen::MatrixXd evecs2, double tol) {
-    auto dim = evecs1.cols();
-    for (size_t i = 0; i < dim; i++) {
-        if (!areEqualEigenvectors(evecs1.col(i), evecs2.col(i), tol)) {
+bool areEqualSetsOfEigenvectors(const Eigen::MatrixXd& eigenvectors1, const Eigen::MatrixXd& eigenvectors2, double tolerance) {
+
+    // Check if the dimensions of the eigenvectors are equal
+    if (eigenvectors1.cols() != eigenvectors2.cols()) {
+        throw std::invalid_argument("Cannot compare the two sets of eigenvectors as they have different dimensions.");
+    }
+
+    if (eigenvectors1.rows() != eigenvectors2.rows()) {
+        throw std::invalid_argument("Cannot compare the two sets of eigenvectors as they have different dimensions.");
+    }
+
+    for (size_t i = 0; i < eigenvectors1.cols(); i++) {
+        const Eigen::VectorXd eigenvector1 = eigenvectors1.col(i);
+        const Eigen::VectorXd eigenvector2 = eigenvectors2.col(i);
+
+        if (!areEqualEigenvectors(eigenvector1, eigenvector2, tolerance)) {
             return false;
         }
     }
+
     return true;
 }
+
 
 
 }  // namespace linalg
 }  // namespace cpputil
-
