@@ -73,7 +73,10 @@ bool areEqualSetsOfEigenvectors(const Eigen::MatrixXd& eigenvectors1, const Eige
     }
 
     for (size_t i = 0; i < eigenvectors1.cols(); i++) {
-        if (!areEqualEigenvectors(eigenvectors1.col(i), eigenvectors2.col(i), tolerance)) {
+        const Eigen::VectorXd eigenvector1 = eigenvectors1.col(i);
+        const Eigen::VectorXd eigenvector2 = eigenvectors2.col(i);
+
+        if (!areEqualEigenvectors(eigenvector1, eigenvector2, tolerance)) {
             return false;
         }
     }

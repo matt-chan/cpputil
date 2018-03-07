@@ -18,17 +18,20 @@ namespace linalg {
  */
 bool areEqual(const Eigen::Tensor<double, 4>& M, const Eigen::Tensor<double, 4>& T, const double tolerance);
 
-/** Check if two sets of eigenvalues are equal
+/**
+ *  Check if two sets of eigenvalues @param: eigenvalues1 and @param: eigenvalues2 are equal within a given tolerance
  */
-bool areEqualEigenvalues(Eigen::VectorXd eigenvalues1, Eigen::VectorXd eigenvalues2, double tolerance);
+bool areEqualEigenvalues(const Eigen::VectorXd& eigenvalues1, const Eigen::VectorXd& eigenvalues2, double tolerance);
 
-/** Check if two eigenvectors are equal. This is the case if they are equal up to their sign.
+/**
+ *  Check if two eigenvectors @param: eigenvectors1 and @param: eigenvectors2 are equal within a given @param: tolerance
  */
-bool areEqualEigenvectors(Eigen::VectorXd eigenvectors1, Eigen::VectorXd eigenvectors2, double tolerance);
+bool areEqualEigenvectors(const Eigen::VectorXd& eigenvectors1, const Eigen::VectorXd& eigenvectors2, double tolerance);
 
-/** Check if two sets of eigenvectors are equal.
+/**
+ *  Check if two sets of eigenvectors (columns in @param: eigenvectors1 and @param: eigenvectors2) are equal within a given @param: tolerance
  */
-bool areEqualSetsOfEigenvectors(Eigen::MatrixXd evecs1, Eigen::MatrixXd evecs2, double tolerance);
+bool areEqualSetsOfEigenvectors(const Eigen::MatrixXd& eigenvectors1, const Eigen::MatrixXd& eigenvectors2, double tolerance);
 
 
 
