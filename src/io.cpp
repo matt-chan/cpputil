@@ -28,7 +28,7 @@ void readArrayFromFile(std::string filename, Eigen::MatrixXd& M) {
             double value;
 
             is >> i >> j >> value;
-            M(i, j) = value;
+            M(i,j) = value;
 
             line_counter ++;
         }
@@ -58,7 +58,7 @@ void readArrayFromFile(std::string filename, Eigen::Tensor<double, 4>& M) {
             float value;
 
             is >> i >> j >> k >> l >> value;
-            M(i, j, k, l) = value;
+            M(i,j,k,l) = value;
         }
 
         file.close();
@@ -68,16 +68,20 @@ void readArrayFromFile(std::string filename, Eigen::Tensor<double, 4>& M) {
 }
 
 
-/** Print the contents of a rank-four tensor in a fashionable way
+/**
+ *  Print the contents of a rank-four tensor @param: T in a fashionable way
  */
 void print(const Eigen::Tensor<double, 4>& T) {
-    auto dim = T.dimension(0);
+    auto dim1 = static_cast<size_t>(T.dimension(0));
+    auto dim2 = static_cast<size_t>(T.dimension(1));
+    auto dim3 = static_cast<size_t>(T.dimension(2));
+    auto dim4 = static_cast<size_t>(T.dimension(3));
 
-    for (size_t i = 0; i < dim; i++) {
-        for (size_t j = 0; j < dim; j++) {
-            for (size_t k = 0; k < dim; k++) {
-                for (size_t l = 0; l < dim; l++) {
-                    std::cout << i << ' ' << j << ' ' << k << ' ' << l << "  " << T(i, j, k, l) << std::endl;
+    for (size_t i = 0; i < dim1; i++) {
+        for (size_t j = 0; j < dim2; j++) {
+            for (size_t k = 0; k < dim3; k++) {
+                for (size_t l = 0; l < dim4; l++) {
+                    std::cout << i << ' ' << j << ' ' << k << ' ' << l << "  " << T(i,j,k,l) << std::endl;
                 }
             }
         }
