@@ -23,9 +23,11 @@ void readArrayFromFile(std::string filename, Eigen::MatrixXd& M);
  */
 void readArrayFromFile(std::string filename, Eigen::Tensor<double, 4>& M);
 
-/** Print the contents of a rank-four tensor in a fashionable way
+/**
+ *  Print the contents of a rank-four tensor @param: T in a fashionable way
  */
 void print(const Eigen::Tensor<double, 4>& T);
+
 
 
 }  // namespace io

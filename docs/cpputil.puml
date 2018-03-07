@@ -10,10 +10,10 @@ namespace cpputil {
     }
 
     class cpputil::linalg {
-        bool **areEqual**(const Eigen::Tensor<double, 4>& M, const Eigen::Tensor<double, 4>& T, const double tolerance)
-        bool **areEqualEigenvalues**(Eigen::VectorXd evals1, Eigen::VectorXd evals2, double tol)
-        bool **areEqualEigenvectors**(Eigen::VectorXd evec1, Eigen::VectorXd evec2, double tol)
-        bool **areEqualSetsOfEigenvectors**(Eigen::MatrixXd evecs1, Eigen::MatrixXd evecs2, double tol)
+        bool **areEqual**(const Eigen::Tensor<double, 4>& M, const Eigen::Tensor<double, 4>& T, double tolerance)
+        bool **areEqualEigenvalues**(const Eigen::VectorXd& eigenvalues1, const Eigen::VectorXd& eigenvalues2, double tolerance)
+        bool **areEqualEigenvectors**(const Eigen::VectorXd& eigenvectors1, const Eigen::VectorXd& eigenvectors2, double tolerance)
+        bool **areEqualSetsOfEigenvectors**(const Eigen::MatrixXd& eigenvectors1, const Eigen::MatrixXd& eigenvectors2, double tolerance)
     }
 
 }
