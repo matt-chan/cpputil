@@ -5,7 +5,7 @@ namespace cpputil {
 
     class cpputil::io {
         void **readArrayFromFile**(std::string filename, Eigen::MatrixXd& M)
-        void **readArrayFromFile**(std::string filename, Eigen::Tensor<double, 4>& M)
+        void **readArrayFromFile**(std::string filename, Eigen::Tensor<double, 4>& T)
         void **print**(const Eigen::Tensor<double, 4>& T)
     }
 

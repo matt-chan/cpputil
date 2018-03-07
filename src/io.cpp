@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 
+#include <boost/algorithm/string.hpp>
 
 
 namespace cpputil {
@@ -14,23 +15,25 @@ namespace io {
  */
 void readArrayFromFile(std::string filename, Eigen::MatrixXd& M) {
 
-    std::ifstream file (filename);
+    M.setZero();  // make sure that the given matrix is initialized to zero values before reading in
 
+    std::ifstream file (filename);
     if (file.is_open()) {
         std::string line;
 
-        size_t line_counter = 1;
         while (std::getline(file, line)) {
-            std::istringstream is (line);
+            std::vector<std::string> splitted_line;  // create a container for the line to be split in
+            boost::split(splitted_line, line, boost::is_any_of(" \t"), boost::token_compress_on);  // split the line on any whitespace or tabs
 
-            int i;
-            int j;
-            double value;
+            if (splitted_line.size() != 3) {
+                throw std::runtime_error("Found a line that doesn't contain exactly 3 fields delimited by whitespace.");
+            }
 
-            is >> i >> j >> value;
+            auto i = std::stoi(splitted_line[0]);
+            auto j = std::stoi(splitted_line[1]);
+            auto value = std::stod(splitted_line[2]);
+
             M(i,j) = value;
-
-            line_counter ++;
         }
 
         file.close();
@@ -43,22 +46,28 @@ void readArrayFromFile(std::string filename, Eigen::MatrixXd& M) {
 /**
  *  Read an array from a given @param: filename line by line, and add the elements to the given rank-4 tensor  @param: T
  */
-void readArrayFromFile(std::string filename, Eigen::Tensor<double, 4>& M) {
-    std::ifstream file (filename);
+void readArrayFromFile(std::string filename, Eigen::Tensor<double, 4>& T) {
 
+    T.setZero();  // make sure that the given tensor is initialized to zero values before reading in
+
+    std::ifstream file (filename);
     if (file.is_open()) {
         std::string line;
         while (std::getline(file, line)) {
-            std::istringstream is(line);
+            std::vector<std::string> splitted_line;  // create a container for the line to be split in
+            boost::split(splitted_line, line, boost::is_any_of(" \t"), boost::token_compress_on);  // split the line on any whitespace or tabs
 
-            int i;
-            int j;
-            int k;
-            int l;
-            float value;
+            if (splitted_line.size() != 5) {
+                throw std::runtime_error("Found a line that doesn't contain exactly 5 fields delimited by whitespace.");
+            }
 
-            is >> i >> j >> k >> l >> value;
-            M(i,j,k,l) = value;
+            auto i = std::stoi(splitted_line[0]);
+            auto j = std::stoi(splitted_line[1]);
+            auto k = std::stoi(splitted_line[2]);
+            auto l = std::stoi(splitted_line[3]);
+            auto value = std::stod(splitted_line[4]);
+
+            T(i,j,k,l) = value;
         }
 
         file.close();
