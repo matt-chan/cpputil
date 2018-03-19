@@ -16,6 +16,10 @@ namespace cpputil {
         bool **areEqualSetsOfEigenvectors**(const Eigen::MatrixXd& eigenvectors1, const Eigen::MatrixXd& eigenvectors2, double tolerance)
     }
 
+    class cpputil {
+        void printExecutionTime(const std::string& method_name, const std::function<void ()>& function)
+    }
+
 }
 
 @enduml
