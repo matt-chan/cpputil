@@ -12,8 +12,9 @@
 
 BOOST_AUTO_TEST_CASE ( read_array_from_file_throws ) {
 
-    Eigen::MatrixXd M (7, 7);
+    Eigen::MatrixXd M = Eigen::MatrixXd::Zero(7, 7);
     Eigen::Tensor<double, 4> T (7, 7, 7, 7);
+    T.setZero();
 
     // Make sure that there's an error when a wrong path is supplied
     BOOST_CHECK_THROW(cpputil::io::readArrayFromFile("../tests/ref_data/h2o_sto-3g_kinetic.dat", M), std::runtime_error);
@@ -44,7 +45,9 @@ BOOST_AUTO_TEST_CASE ( read_array_from_file_example ) {
 
     // Test the read function on a small example mimicking the two-electron integrals
     Eigen::Tensor<double, 4> T (6, 6, 6, 6);
+    T.setZero();
     Eigen::Tensor<double, 4> T_ref (6, 6, 6, 6);
+    T_ref.setZero();
     T_ref(0,0,0,0) = 4.78506540471;
     T_ref(0,0,0,1) = 0.741380351973;
     T_ref(0,0,0,2) = 0.0;
