@@ -1,4 +1,4 @@
-# cpputil
+# cpputil v1.2.1
 
 [![Build Status](https://travis-ci.org/GQCG/cpputil.svg?branch=master)](https://travis-ci.org/GQCG/cpputil)
 
@@ -9,7 +9,7 @@ A C++ library that includes utility functions that do not belong in other, more 
 ## Dependencies
 
 [![Boost Dependency](https://img.shields.io/badge/Boost-1.65.1+-blue.svg)](http://www.boost.org)
-[![Eigen3 Dependency](https://img.shields.io/badge/Eigen-3.4+-blue.svg)](http://eigen.tuxfamily.org/index.php?title=Main_Page)
+[![Eigen3 Dependency](https://img.shields.io/badge/Eigen-3.3.4+-blue.svg)](http://eigen.tuxfamily.org/index.php?title=Main_Page)
 
 
 
