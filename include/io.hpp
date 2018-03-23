@@ -14,20 +14,19 @@ namespace io {
 
 
 /**
- *  Read an array from a given @param: filename line by line, and add the elements to the given matrix @param: M
+ *  Read an array from a given @param: filename line by line, and add the elements to the given matrix @param: M.
  */
 void readArrayFromFile(std::string filename, Eigen::MatrixXd& M);
 
 /**
- *  Read an array from a given @param: filename line by line, and add the elements to the given rank-4 tensor  @param: T
+ *  Read an array from a given @param: filename line by line, and add the elements to the given rank-4 tensor @param: T.
  */
 void readArrayFromFile(std::string filename, Eigen::Tensor<double, 4>& T);
 
 /**
- *  Print the contents of a rank-four tensor @param: T in a fashionable way
+ *  Print the contents of a rank-four tensor @param: T in a fashionable way.
  */
 void print(const Eigen::Tensor<double, 4>& T);
-
 
 
 }  // namespace io
@@ -35,4 +34,4 @@ void print(const Eigen::Tensor<double, 4>& T);
 
 
 
-#endif // CPPUTIL_IO_HPP
+#endif  // CPPUTIL_IO_HPP

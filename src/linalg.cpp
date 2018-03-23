@@ -1,12 +1,13 @@
 #include "linalg.hpp"
 
 
+
 namespace cpputil {
 namespace linalg {
 
 
 /**
- *  Return if two rank-4 tensors @param: M and @param: T are approximately equal within a given @param: tolerance
+ *  @return if two rank-4 tensors @param: M and @param: T are approximately equal with respect to a @param: tolerance.
  *
  *  This function is implemented because Eigen::Tensor does not have an isApprox yet.
  */
@@ -41,7 +42,7 @@ bool areEqual(const Eigen::Tensor<double, 4>& M, const Eigen::Tensor<double, 4>&
 
 
 /**
- *  Check if two sets of eigenvalues @param: eigenvalues1 and @param: eigenvalues2 are equal within a given tolerance
+ *  @return if two sets of eigenvalues @param: eigenvalues1 and @param: eigenvalues2 are equal within a given tolerance.
  */
 bool areEqualEigenvalues(const Eigen::VectorXd& eigenvalues1, const Eigen::VectorXd& eigenvalues2, double tolerance) {
     return eigenvalues1.isApprox(eigenvalues2, tolerance);
@@ -49,9 +50,11 @@ bool areEqualEigenvalues(const Eigen::VectorXd& eigenvalues1, const Eigen::Vecto
 
 
 /**
- *  Check if two eigenvectors @param: eigenvectors1 and @param: eigenvectors2 are equal within a given @param: tolerance
+ *  @return if two eigenvectors @param: eigenvectors1 and @param: eigenvectors2 are equal within a given
+ *  @param: tolerance.
  */
-bool areEqualEigenvectors(const Eigen::VectorXd& eigenvectors1, const Eigen::VectorXd& eigenvectors2, double tolerance) {
+bool areEqualEigenvectors(const Eigen::VectorXd& eigenvectors1, const Eigen::VectorXd& eigenvectors2,
+                          double tolerance) {
 
     //  Eigenvectors are equal if they are equal up to their sign.
     return (eigenvectors1.isApprox(eigenvectors2, tolerance) || eigenvectors1.isApprox(-eigenvectors2, tolerance));
@@ -59,11 +62,13 @@ bool areEqualEigenvectors(const Eigen::VectorXd& eigenvectors1, const Eigen::Vec
 
 
 /**
- *  Check if two sets of eigenvectors (columns in @param: eigenvectors1 and @param: eigenvectors2) are equal within a given @param: tolerance
+ *  @return if two sets of eigenvectors (columns in @param: eigenvectors1 and @param: eigenvectors2) are equal within a
+ *  given @param: tolerance.
  */
-bool areEqualSetsOfEigenvectors(const Eigen::MatrixXd& eigenvectors1, const Eigen::MatrixXd& eigenvectors2, double tolerance) {
+bool areEqualSetsOfEigenvectors(const Eigen::MatrixXd& eigenvectors1, const Eigen::MatrixXd& eigenvectors2,
+                                double tolerance) {
 
-    // Check if the dimensions of the eigenvectors are equal
+    // Check if the dimensions of the eigenvectors are equal.
     if (eigenvectors1.cols() != eigenvectors2.cols()) {
         throw std::invalid_argument("Cannot compare the two sets of eigenvectors as they have different dimensions.");
     }
@@ -71,6 +76,7 @@ bool areEqualSetsOfEigenvectors(const Eigen::MatrixXd& eigenvectors1, const Eige
     if (eigenvectors1.rows() != eigenvectors2.rows()) {
         throw std::invalid_argument("Cannot compare the two sets of eigenvectors as they have different dimensions.");
     }
+
 
     for (size_t i = 0; i < eigenvectors1.cols(); i++) {
         const Eigen::VectorXd eigenvector1 = eigenvectors1.col(i);
@@ -83,7 +89,6 @@ bool areEqualSetsOfEigenvectors(const Eigen::MatrixXd& eigenvectors1, const Eige
 
     return true;
 }
-
 
 
 }  // namespace linalg

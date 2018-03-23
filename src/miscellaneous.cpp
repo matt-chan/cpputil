@@ -18,16 +18,16 @@ namespace cpputil {
 void printExecutionTime(const std::string& method_name, const std::function<void()>& function) {
 
     // High resolution clock example from (https://stackoverflow.com/a/12231232/7930415).
-    auto t1 = std::chrono::high_resolution_clock::now();  // clock at start
+    auto start = std::chrono::high_resolution_clock::now();
 
     function();
 
-    auto t2 = std::chrono::high_resolution_clock::now();  // clock at end
+    auto stop = std::chrono::high_resolution_clock::now();
 
 
-    // Print the timings
+    // Print the timings.
     std::cout << method_name << " took "
-              << std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count()
+              << std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count()
               << " milliseconds to complete." << std::endl;
 }
 
