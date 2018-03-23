@@ -16,7 +16,7 @@ A C++ library that includes utility functions that do not belong in our other, m
 ## Installation
 
 To install this library:
-1. clone the master branch, which contains the latest release
+1. clone the master branch, which contains the latest release:
 
         git clone git@github.com:GQCG/cpputil.git --branch master --single-branch
         cd cpputil
