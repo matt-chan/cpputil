@@ -3,7 +3,9 @@
 
 
 
-// This file acts as a collective include header
+/**
+ *  The collective include header for cpputil.
+ */
 #include "io.hpp"
 #include "linalg.hpp"
 #include "miscellaneous.hpp"

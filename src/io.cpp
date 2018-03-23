@@ -6,6 +6,7 @@
 #include <boost/algorithm/string.hpp>
 
 
+
 namespace cpputil {
 namespace io {
 
@@ -23,7 +24,9 @@ void readArrayFromFile(std::string filename, Eigen::MatrixXd& M) {
 
         while (std::getline(file, line)) {
             std::vector<std::string> splitted_line;  // create a container for the line to be split in
-            boost::split(splitted_line, line, boost::is_any_of(" \t"), boost::token_compress_on);  // split the line on any whitespace or tabs
+
+            // Split the line on any whitespace or tabs.
+            boost::split(splitted_line, line, boost::is_any_of(" \t"), boost::token_compress_on);
 
             if (splitted_line.size() != 3) {
                 throw std::runtime_error("Found a line that doesn't contain exactly 3 fields delimited by whitespace.");
@@ -44,7 +47,7 @@ void readArrayFromFile(std::string filename, Eigen::MatrixXd& M) {
 
 
 /**
- *  Read an array from a given @param: filename line by line, and add the elements to the given rank-4 tensor  @param: T
+ *  Read an array from a given @param: filename line by line, and add the elements to the given rank-4 tensor @param: T.
  */
 void readArrayFromFile(std::string filename, Eigen::Tensor<double, 4>& T) {
 
@@ -55,7 +58,9 @@ void readArrayFromFile(std::string filename, Eigen::Tensor<double, 4>& T) {
         std::string line;
         while (std::getline(file, line)) {
             std::vector<std::string> splitted_line;  // create a container for the line to be split in
-            boost::split(splitted_line, line, boost::is_any_of(" \t"), boost::token_compress_on);  // split the line on any whitespace or tabs
+
+            // Split the line on any whitespace or tabs.
+            boost::split(splitted_line, line, boost::is_any_of(" \t"), boost::token_compress_on);
 
             if (splitted_line.size() != 5) {
                 throw std::runtime_error("Found a line that doesn't contain exactly 5 fields delimited by whitespace.");
@@ -78,7 +83,7 @@ void readArrayFromFile(std::string filename, Eigen::Tensor<double, 4>& T) {
 
 
 /**
- *  Print the contents of a rank-four tensor @param: T in a fashionable way
+ *  Print the contents of a rank-four tensor @param: T in a fashionable way.
  */
 void print(const Eigen::Tensor<double, 4>& T) {
     auto dim1 = static_cast<size_t>(T.dimension(0));
@@ -96,7 +101,6 @@ void print(const Eigen::Tensor<double, 4>& T) {
         }
     }
 }
-
 
 
 }  // namespace io
