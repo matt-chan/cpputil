@@ -14,7 +14,7 @@ namespace io {
 /**
  *  Read an array from a given @param: filename line by line, and add the elements to the given matrix @param: M.
  */
-void readArrayFromFile(std::string filename, Eigen::MatrixXd& M) {
+void readArrayFromFile(const std::string& filename, Eigen::MatrixXd& M) {
 
     M.setZero();  // make sure that the given matrix is initialized to zero values before reading in
 
@@ -49,7 +49,7 @@ void readArrayFromFile(std::string filename, Eigen::MatrixXd& M) {
 /**
  *  Read an array from a given @param: filename line by line, and add the elements to the given rank-4 tensor @param: T.
  */
-void readArrayFromFile(std::string filename, Eigen::Tensor<double, 4>& T) {
+void readArrayFromFile(const std::string& filename, Eigen::Tensor<double, 4>& T) {
 
     T.setZero();  // make sure that the given tensor is initialized to zero values before reading in
 
