@@ -14,6 +14,11 @@ namespace io {
 
 
 /**
+ *  Read a vector from a given @param filename line by line and add the elements to the given vector @param v.
+ */
+void readVectorFromFile(const std::string& filename, Eigen::VectorXd& v);
+
+/**
  *  Read an array from a given @param: filename line by line, and add the elements to the given matrix @param: M.
  */
 void readArrayFromFile(const std::string& filename, Eigen::MatrixXd& M);
