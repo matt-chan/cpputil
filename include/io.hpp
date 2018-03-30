@@ -14,14 +14,19 @@ namespace io {
 
 
 /**
+ *  Read a vector from a given @param filename line by line and add the elements to the given vector @param v.
+ */
+void readVectorFromFile(const std::string& filename, Eigen::VectorXd& v);
+
+/**
  *  Read an array from a given @param: filename line by line, and add the elements to the given matrix @param: M.
  */
-void readArrayFromFile(std::string filename, Eigen::MatrixXd& M);
+void readArrayFromFile(const std::string& filename, Eigen::MatrixXd& M);
 
 /**
  *  Read an array from a given @param: filename line by line, and add the elements to the given rank-4 tensor @param: T.
  */
-void readArrayFromFile(std::string filename, Eigen::Tensor<double, 4>& T);
+void readArrayFromFile(const std::string& filename, Eigen::Tensor<double, 4>& T);
 
 /**
  *  Print the contents of a rank-four tensor @param: T in a fashionable way.

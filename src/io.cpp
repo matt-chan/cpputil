@@ -12,9 +12,44 @@ namespace io {
 
 
 /**
+ *  Read a vector from a given @param filename line by line and add the elements to the given vector @param v.
+ */
+void readVectorFromFile(const std::string& filename, Eigen::VectorXd& v) {
+
+    v.setZero();
+
+    std::ifstream file (filename);
+    size_t index = 0;
+    if (file.is_open()) {
+        std::string line;
+
+        while (std::getline(file, line)) {
+            std::vector<std::string> splitted_line;  // create a container for the line to be split in
+
+            // Split the line on any whitespace or tabs.
+            boost::split(splitted_line, line, boost::is_any_of(" \t"), boost::token_compress_on);
+
+            if (splitted_line.size() != 1) {
+                throw std::runtime_error("Found a line that doesn't contain exactly 1 field delimited by whitespace.");
+            }
+
+            auto value = std::stod(splitted_line[0]);
+            v(index) = value;
+
+            ++index;
+        }
+
+        file.close();
+    } else {
+        throw std::runtime_error("Cannot open the given file. Maybe you specified a wrong path?");
+    }
+}
+
+
+/**
  *  Read an array from a given @param: filename line by line, and add the elements to the given matrix @param: M.
  */
-void readArrayFromFile(std::string filename, Eigen::MatrixXd& M) {
+void readArrayFromFile(const std::string& filename, Eigen::MatrixXd& M) {
 
     M.setZero();  // make sure that the given matrix is initialized to zero values before reading in
 
@@ -49,7 +84,7 @@ void readArrayFromFile(std::string filename, Eigen::MatrixXd& M) {
 /**
  *  Read an array from a given @param: filename line by line, and add the elements to the given rank-4 tensor @param: T.
  */
-void readArrayFromFile(std::string filename, Eigen::Tensor<double, 4>& T) {
+void readArrayFromFile(const std::string& filename, Eigen::Tensor<double, 4>& T) {
 
     T.setZero();  // make sure that the given tensor is initialized to zero values before reading in
 
