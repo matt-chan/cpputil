@@ -1,8 +1,8 @@
 # In this CMake file, we will find all required packages
 
 
-# Find Boost.
+# Find Boost
 find_package(Boost REQUIRED)
 
-# Find Eigen3 (see http://eigen.tuxfamily.org/dox/TopicCMakeGuide.html).
-find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+# Find Eigen3 (through the supplied FindEigen3.cmake file
+find_package(Eigen3 3.3.4 REQUIRED)
