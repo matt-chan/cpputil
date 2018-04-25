@@ -5,4 +5,4 @@
 find_package(Boost REQUIRED)
 
 # Find Eigen3 (see http://eigen.tuxfamily.org/dox/TopicCMakeGuide.html).
-find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+find_package(Eigen3 3.3.4 REQUIRED)
