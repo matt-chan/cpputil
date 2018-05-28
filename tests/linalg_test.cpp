@@ -113,3 +113,30 @@ BOOST_AUTO_TEST_CASE ( areEqualSetsOfEigenvectors_example ) {
 
     BOOST_CHECK(!cpputil::linalg::areEqualSetsOfEigenvectors(eigenvectors1, eigenvectors4, 1.0e-6));
 }
+
+
+BOOST_AUTO_TEST_CASE ( toMatrix ) {
+
+    // Create an example tensor
+    Eigen::Tensor<double, 4> T (2, 2, 2, 2);
+
+    for (size_t i = 0; i < 2; i++) {
+        for (size_t j = 0; j < 2; j++) {
+            for (size_t k = 0; k < 2; k++) {
+                for (size_t l = 0; l < 2; l++) {
+                    T(i,j,k,l) = l + 2*k + 4*j + 8*i;
+                }
+            }
+        }
+    }
+
+
+    Eigen::MatrixXd M_ref (4, 4);
+    M_ref <<  0,  2,  1,  3,
+              8, 10,  9, 11,
+              4,  6,  5,  7,
+             12, 14, 13, 15;
+
+
+    BOOST_CHECK(M_ref.isApprox(cpputil::linalg::toMatrix(T), 1.0e-12));
+}

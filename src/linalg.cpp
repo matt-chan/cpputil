@@ -107,5 +107,40 @@ bool areEqualSetsOfEigenvectors(const Eigen::MatrixXd& eigenvectors1, const Eige
 }
 
 
+/**
+ *  Reduce a rank-4 tensor @param T to and @return a 2-dimensional matrix
+ *
+ *  The elements of the tensor @param T are found the matrix such that
+ *      M(m,n) = T(i,j,k,l)
+ *
+ *  in which
+ *      m is calculated from i and j in a column-major way
+ *      n is calculated from k and l in a column-major way
+ */
+Eigen::MatrixXd toMatrix(const Eigen::Tensor<double, 4>& T) {
+
+    // Initialize the resulting matrix
+    const auto& dims = T.dimensions();
+    Eigen::MatrixXd M (dims[0]*dims[1], dims[2]*dims[3]);
+
+
+    // Calculate the compound indices and bring the elements from the tensor over into the matrix
+    for (size_t i = 0; i < dims[0]; i++) {
+        for (size_t j = 0; j < dims[1]; j++) {
+            for (size_t k = 0; k < dims[2]; k++) {
+                for (size_t l = 0; l < dims[3]; l++) {
+                    size_t m = i + dims[0] * j;
+                    size_t n = k + dims[2] * l;
+
+                    M(m,n) = T(i,j,k,l);
+                }
+            }
+        }
+    }
+
+    return M;
+}
+
+
 }  // namespace linalg
 }  // namespace cpputil

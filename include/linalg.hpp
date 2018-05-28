@@ -54,6 +54,19 @@ bool areEqualSetsOfEigenvectors(const Eigen::MatrixXd& eigenvectors1, const Eige
                                 double tolerance);
 
 
+/**
+ *  Reduce a rank-4 tensor @param T to and @return a 2-dimensional matrix
+ *
+ *  The elements of the tensor @param T are found the matrix such that
+ *      M(m,n) = T(i,j,k,l)
+ *
+ *  in which
+ *      m is calculated from i and j in a column-major way
+ *      n is calculated from k and l in a column-major way
+ */
+Eigen::MatrixXd toMatrix(const Eigen::Tensor<double, 4>& T);
+
+
 }  // namespace linalg
 }  // namespace cpputil
 
