@@ -15,6 +15,8 @@ namespace cpputil {
         bool **areEqualEigenvalues**(const Eigen::VectorXd& eigenvalues1, const Eigen::VectorXd& eigenvalues2, double tolerance)
         bool **areEqualEigenvectors**(const Eigen::VectorXd& eigenvectors1, const Eigen::VectorXd& eigenvectors2, double tolerance)
         bool **areEqualSetsOfEigenvectors**(const Eigen::MatrixXd& eigenvectors1, const Eigen::MatrixXd& eigenvectors2, double tolerance)
+
+        Eigen::MatrixXd **toMatrix**(const Eigen::Tensor<double, 4>& T)
     }
 
     class cpputil {
