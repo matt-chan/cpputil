@@ -115,6 +115,36 @@ BOOST_AUTO_TEST_CASE ( areEqualSetsOfEigenvectors_example ) {
 }
 
 
+BOOST_AUTO_TEST_CASE ( strictLowerTriangle ) {
+
+    Eigen::MatrixXd A (3, 3);
+    A << 1, 2, 3,
+         4, 5, 6,
+         7, 8, 9;
+
+    Eigen::VectorXd ref_strict_lower_triangle_A (3);
+    ref_strict_lower_triangle_A << 4, 7, 8;
+
+    BOOST_CHECK(ref_strict_lower_triangle_A.isApprox(cpputil::linalg::strictLowerTriangle(A)));
+
+
+    Eigen::MatrixXd B (4, 4);
+    B <<  1,  2,  3,  4,
+          5,  6,  7,  8,
+          9, 10, 11, 12,
+         13, 14, 15, 16;
+
+    Eigen::VectorXd ref_strict_lower_triangle_B (6);
+    ref_strict_lower_triangle_B << 5, 9, 13, 10, 14, 15;
+
+    BOOST_CHECK(ref_strict_lower_triangle_B.isApprox(cpputil::linalg::strictLowerTriangle(B)));
+
+
+    Eigen::MatrixXd A_invalid (3, 4);
+    BOOST_CHECK_THROW(cpputil::linalg::strictLowerTriangle(A_invalid), std::invalid_argument);
+}
+
+
 BOOST_AUTO_TEST_CASE ( toMatrix ) {
 
     // Create an example tensor

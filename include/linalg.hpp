@@ -55,6 +55,16 @@ bool areEqualSetsOfEigenvectors(const Eigen::MatrixXd& eigenvectors1, const Eige
 
 
 /**
+ *  Given a matrix @param M, @return the strictly lower triangular matrix (i.e. without the diagonal elements) as a
+ *  vector in column-major form.
+ *
+ *          1       -> (1, 2, 3)
+ *          2   3
+ */
+Eigen::VectorXd strictLowerTriangle(const Eigen::MatrixXd& M);
+
+
+/**
  *  Reduce a rank-4 tensor @param T to and @return a 2-dimensional matrix
  *
  *  The elements of the tensor @param T are found the matrix such that

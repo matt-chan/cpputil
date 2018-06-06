@@ -108,6 +108,34 @@ bool areEqualSetsOfEigenvectors(const Eigen::MatrixXd& eigenvectors1, const Eige
 
 
 /**
+ *  Given a square matrix @param M, @return the strictly lower triangular matrix (i.e. without the diagonal elements) as a
+ *  vector in column-major form.
+ *
+ *          1       -> (1, 2, 3)
+ *          2   3
+ */
+Eigen::VectorXd strictLowerTriangle(const Eigen::MatrixXd& M) {
+
+    if (M.cols() != M.rows()) {
+        throw std::invalid_argument("The given matrix is not square.");
+    }
+
+    auto K = static_cast<size_t>(M.cols());  // the dimension of the matrix
+    Eigen::VectorXd m = Eigen::VectorXd::Zero((K*(K-1)/2));  // strictly lower triangle has K(K-1)/2 parameters
+
+    size_t vector_index = 0;
+    for (size_t q = 0; q < K; q++) {
+        for (size_t p = q+1; p < K; p++) {
+            m(vector_index) = M(p,q);
+            vector_index++;
+        }
+    }
+
+    return m;
+}
+
+
+/**
  *  Reduce a rank-4 tensor @param T to and @return a 2-dimensional matrix
  *
  *  The elements of the tensor @param T are found the matrix such that
