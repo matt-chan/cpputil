@@ -145,6 +145,9 @@ BOOST_AUTO_TEST_CASE ( strictLowerTriangle ) {
 }
 
 
+#include "io.hpp"
+
+
 BOOST_AUTO_TEST_CASE ( toMatrix ) {
 
     // Create an example tensor
@@ -169,4 +172,18 @@ BOOST_AUTO_TEST_CASE ( toMatrix ) {
 
 
     BOOST_CHECK(M_ref.isApprox(cpputil::linalg::toMatrix(T), 1.0e-12));
+
+
+    Eigen::Tensor<double, 4> M (3, 3, 3, 3);
+    for (size_t i = 0; i < 3; i++) {
+        for (size_t j = 0; j < 3; j++) {
+            for (size_t k = 0; k < 3; k++) {
+                for (size_t l = 0; l < 3; l++) {
+                    M(i,j,k,l) = l + 3*k + 9*j + 27*i;
+                }
+            }
+        }
+    }
+
+//    cpputil::io::print(M);
 }

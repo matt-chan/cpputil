@@ -153,16 +153,21 @@ Eigen::MatrixXd toMatrix(const Eigen::Tensor<double, 4>& T) {
 
 
     // Calculate the compound indices and bring the elements from the tensor over into the matrix
-    for (size_t i = 0; i < dims[0]; i++) {
-        for (size_t j = 0; j < dims[1]; j++) {
-            for (size_t k = 0; k < dims[2]; k++) {
-                for (size_t l = 0; l < dims[3]; l++) {
-                    size_t m = i + dims[0] * j;
-                    size_t n = k + dims[2] * l;
+    size_t row_index = 0;
+    for (size_t j = 0; j < dims[1]; j++) {  // "column major" ordering for row_index<-i,j so we do j first, then i
+        for (size_t i = 0; i < dims[0]; i++) {  // in column major indices, columns are contiguous, so the first of two indices changes more rapidly
 
-                    M(m,n) = T(i,j,k,l);
+            size_t column_index = 0;
+            for (size_t l = 0; l < dims[l]; l++) {  // "column major" ordering for column_index<-k,l so we do l first, then k
+                for (size_t k = 0; k < dims[2]; k++) {  // in column major indices, columns are contiguous, so the first of two indices changes more rapidly
+
+                    M(row_index,column_index) = T(i,j,k,l);
+
+                    column_index++;
                 }
             }
+
+            row_index++;
         }
     }
 
