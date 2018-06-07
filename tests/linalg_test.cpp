@@ -138,7 +138,10 @@ BOOST_AUTO_TEST_CASE ( strictLowerTriangle_matrix ) {
     ref_strict_lower_triangle_B << 5, 9, 13, 10, 14, 15;
 
     BOOST_CHECK(ref_strict_lower_triangle_B.isApprox(cpputil::linalg::strictLowerTriangle(B)));
+}
 
+
+BOOST_AUTO_TEST_CASE ( strictLowerTriangle_matrix_invalid ) {
 
     Eigen::MatrixXd A_invalid (3, 4);
     BOOST_CHECK_THROW(cpputil::linalg::strictLowerTriangle(A_invalid), std::invalid_argument);
@@ -159,7 +162,6 @@ BOOST_AUTO_TEST_CASE ( toMatrix ) {
             }
         }
     }
-
 
     Eigen::MatrixXd M1_ref (4, 4);
     M1_ref <<  0,  2,  1,  3,
@@ -197,7 +199,6 @@ BOOST_AUTO_TEST_CASE ( toMatrix ) {
 }
 
 
-
 BOOST_AUTO_TEST_CASE ( strictLowerTriangle_tensor ) {
 
     // Create an example tensor
@@ -231,9 +232,10 @@ BOOST_AUTO_TEST_CASE ( strictLowerTriangle_tensor ) {
             }
         }
     }
+}
 
 
-
+BOOST_AUTO_TEST_CASE ( strictLowerTriangle_tensor_invalid ) {
 
     Eigen::Tensor<double, 4> T_invalid (4, 3, 3, 3);
     BOOST_CHECK_THROW(cpputil::linalg::strictLowerTriangle(T_invalid), std::invalid_argument);
