@@ -202,36 +202,43 @@ BOOST_AUTO_TEST_CASE ( toMatrix ) {
 BOOST_AUTO_TEST_CASE ( strictLowerTriangle_tensor ) {
 
     // Create an example tensor
-    Eigen::Tensor<double, 4> T (2, 2, 2, 2);
+    Eigen::Tensor<double, 4> T1 (2, 2, 2, 2);
 
     for (size_t i = 0; i < 2; i++) {
         for (size_t j = 0; j < 2; j++) {
             for (size_t k = 0; k < 2; k++) {
                 for (size_t l = 0; l < 2; l++) {
-                    T(i,j,k,l) = l + 2*k + 4*j + 8*i;
+                    T1(i,j,k,l) = l + 2*k + 4*j + 8*i;
                 }
             }
         }
     }
 
 
-    Eigen::MatrixXd M_ref (1,1);
-    M_ref << 10;  // by manual inspection we find that this is the only value that should appear in the matrix
+    Eigen::MatrixXd M1_ref (1, 1);  // 2*(2-1)/2 = 1
+    M1_ref << 10;  // by manual inspection we find that this is the only value that should appear in the matrix
+
+    BOOST_CHECK(M1_ref.isApprox(cpputil::linalg::strictLowerTriangle(T1)));
 
 
-    BOOST_CHECK(M_ref.isApprox(cpputil::linalg::strictLowerTriangle(T)));
-
-
-    Eigen::Tensor<double, 4> M (3, 3, 3, 3);
+    Eigen::Tensor<double, 4> T2 (3, 3, 3, 3);
     for (size_t i = 0; i < 3; i++) {
         for (size_t j = 0; j < 3; j++) {
             for (size_t k = 0; k < 3; k++) {
                 for (size_t l = 0; l < 3; l++) {
-                    M(i,j,k,l) = l + 3*k + 9*j + 27*i;
+                    T2(i,j,k,l) = l + 3*k + 9*j + 27*i;
                 }
             }
         }
     }
+
+
+    Eigen::MatrixXd M2_ref (3, 3);  // 3*(3-1)/2 = 3
+    M2_ref << 30, 33, 34,
+              57, 60, 61,
+              66, 69, 70;  // by manual inspection, these should be the elements of the reduced matrix
+
+    BOOST_CHECK(M2_ref.isApprox(cpputil::linalg::strictLowerTriangle(T2)));
 }
 
 
