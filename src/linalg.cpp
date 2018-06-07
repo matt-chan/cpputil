@@ -125,8 +125,8 @@ Eigen::VectorXd strictLowerTriangle(const Eigen::MatrixXd& M) {
     Eigen::VectorXd m = Eigen::VectorXd::Zero((K*(K-1)/2));  // strictly lower triangle has K(K-1)/2 parameters
 
     size_t vector_index = 0;
-    for (size_t q = 0; q < K; q++) {
-        for (size_t p = q+1; p < K; p++) {
+    for (size_t q = 0; q < K; q++) {  // "column major" ordering for, so we do p first, then q
+        for (size_t p = q+1; p < K; p++) {  // strict lower triangle means p > q
             m(vector_index) = M(p,q);
             vector_index++;
         }
@@ -203,12 +203,12 @@ Eigen::MatrixXd strictLowerTriangle(const Eigen::Tensor<double, 4>& T) {
     size_t row_index = 0;
     for (size_t j = 0; j < dims[1]; j++) {  // "column major" ordering for row_index<-i,j so we do j first, then i
         for (size_t i = j+1; i < dims[0]; i++) {  // in column major indices, columns are contiguous, so the first of two indices changes more rapidly
-                                                  // require i > j
+                                                  // require i > j for "lower triangle"
 
             size_t column_index = 0;
             for (size_t l = 0; l < dims[l]; l++) {  // "column major" ordering for column_index<-k,l so we do l first, then k
                 for (size_t k = l+1; k < dims[2]; k++) {  // in column major indices, columns are contiguous, so the first of two indices changes more rapidly
-                                                          // require l > k
+                                                          // require l > k for "lower triangle"
 
                     M(row_index,column_index) = T(i,j,k,l);
 
