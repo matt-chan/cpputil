@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with GQCG-cpputil.  If not, see <http://www.gnu.org/licenses/>.
 #include "linalg.hpp"
+#include <iostream>
 
 
 
@@ -160,6 +161,54 @@ Eigen::MatrixXd toMatrix(const Eigen::Tensor<double, 4>& T) {
             size_t column_index = 0;
             for (size_t l = 0; l < dims[l]; l++) {  // "column major" ordering for column_index<-k,l so we do l first, then k
                 for (size_t k = 0; k < dims[2]; k++) {  // in column major indices, columns are contiguous, so the first of two indices changes more rapidly
+
+                    M(row_index,column_index) = T(i,j,k,l);
+
+                    column_index++;
+                }
+            }
+
+            row_index++;
+        }
+    }
+
+    return M;
+}
+
+
+/**
+ *  Given a rank-4 with dimensions (K,K,K,K) tensor @param T, @return the strict "lower triangle" as a matrix in column major form
+ *  The matrix indices (m,n) come from the tensor indices (i,j,k,l) and are such that:
+ *      - m is compounded in a column major way from i and j, with the restriction i>j
+ *      - n is compounded in a column major way from k and l, with the restriction k>l
+ */
+Eigen::MatrixXd strictLowerTriangle(const Eigen::Tensor<double, 4>& T) {
+
+    // Check for invalid input
+    const auto& dims = T.dimensions();
+
+    auto K = static_cast<size_t> (dims[0]);
+    for (size_t i = 1; i < 4; i++) {
+        if (K != dims[i]) {
+            throw std::invalid_argument("The given tensor does not have equal dimensions in each rank.");
+        }
+    }
+
+
+    // Initialize the resulting matrix
+    Eigen::MatrixXd M (K*(K-1)/2, K*(K-1)/2);
+
+
+    // Calculate the compound indices and bring the elements from the tensor over into the matrix
+    size_t row_index = 0;
+    for (size_t j = 0; j < dims[1]; j++) {  // "column major" ordering for row_index<-i,j so we do j first, then i
+        for (size_t i = j+1; i < dims[0]; i++) {  // in column major indices, columns are contiguous, so the first of two indices changes more rapidly
+                                                  // require i > j
+
+            size_t column_index = 0;
+            for (size_t l = 0; l < dims[l]; l++) {  // "column major" ordering for column_index<-k,l so we do l first, then k
+                for (size_t k = l+1; k < dims[2]; k++) {  // in column major indices, columns are contiguous, so the first of two indices changes more rapidly
+                                                          // require l > k
 
                     M(row_index,column_index) = T(i,j,k,l);
 

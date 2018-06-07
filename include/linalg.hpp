@@ -65,6 +65,15 @@ Eigen::VectorXd strictLowerTriangle(const Eigen::MatrixXd& M);
 
 
 /**
+ *  Given a rank-4 with dimensions (K,K,K,K) tensor @param T, @return the strict "lower triangle" as a matrix in column major form
+ *  The matrix indices (m,n) come from the tensor indices (i,j,k,l) and are such that:
+ *      - m is compounded in a column major way from i and j, with the restriction i>j
+ *      - n is compounded in a column major way from k and l, with the restriction k>l
+ */
+Eigen::MatrixXd strictLowerTriangle(const Eigen::Tensor<double, 4>& T);
+
+
+/**
  *  Reduce a rank-4 tensor @param T to and @return a 2-dimensional matrix
  *
  *  The elements of the tensor @param T are found the matrix such that
