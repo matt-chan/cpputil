@@ -145,6 +145,59 @@ BOOST_AUTO_TEST_CASE ( strictLowerTriangle_matrix ) {
 }
 
 
+BOOST_AUTO_TEST_CASE ( toMatrix ) {
+
+    // Create an example 2x2x2x2 tensor
+    Eigen::Tensor<double, 4> T1 (2, 2, 2, 2);
+
+    for (size_t i = 0; i < 2; i++) {
+        for (size_t j = 0; j < 2; j++) {
+            for (size_t k = 0; k < 2; k++) {
+                for (size_t l = 0; l < 2; l++) {
+                    T1(i,j,k,l) = l + 2*k + 4*j + 8*i;
+                }
+            }
+        }
+    }
+
+
+    Eigen::MatrixXd M1_ref (4, 4);
+    M1_ref <<  0,  2,  1,  3,
+               8, 10,  9, 11,
+               4,  6,  5,  7,
+              12, 14, 13, 15;
+
+    BOOST_CHECK(M1_ref.isApprox(cpputil::linalg::toMatrix(T1), 1.0e-12));
+
+
+    // Create an example 3x3x3x3 tensor
+    Eigen::Tensor<double, 4> T2 (3, 3, 3, 3);
+    for (size_t i = 0; i < 3; i++) {
+        for (size_t j = 0; j < 3; j++) {
+            for (size_t k = 0; k < 3; k++) {
+                for (size_t l = 0; l < 3; l++) {
+                    T2(i,j,k,l) = l + 3*k + 9*j + 27*i;
+                }
+            }
+        }
+    }
+
+    Eigen::MatrixXd M2_ref (9, 9);
+    M2_ref <<  0,  3,  6,  1,  4,  7,  2,  5,  8,
+              27, 30, 33, 28, 31, 34, 29, 32, 35,
+              54, 57, 60, 55, 58, 61, 56, 59, 62,
+               9, 12, 15, 10, 13, 16, 11, 14, 17,
+              36, 39, 42, 37, 40, 43, 38, 41, 44,
+              63, 66, 69, 64, 67, 70, 65, 68, 71,
+              18, 21, 24, 19, 22, 25, 20, 23, 26,
+              45, 48, 51, 46, 49, 52, 47, 50, 53,
+              72, 75, 78, 73, 76, 79, 74, 77, 80;
+
+    BOOST_CHECK(M2_ref.isApprox(cpputil::linalg::toMatrix(T2), 1.0e-12));
+}
+
+
+
 BOOST_AUTO_TEST_CASE ( strictLowerTriangle_tensor ) {
 
     // Create an example tensor
@@ -168,37 +221,6 @@ BOOST_AUTO_TEST_CASE ( strictLowerTriangle_tensor ) {
     BOOST_CHECK(M_ref.isApprox(cpputil::linalg::strictLowerTriangle(T)));
 
 
-    Eigen::Tensor<double, 4> T_invalid (4, 3, 3, 3);
-    BOOST_CHECK_THROW(cpputil::linalg::strictLowerTriangle(T_invalid), std::invalid_argument);
-}
-
-
-BOOST_AUTO_TEST_CASE ( toMatrix ) {
-
-    // Create an example tensor
-    Eigen::Tensor<double, 4> T (2, 2, 2, 2);
-
-    for (size_t i = 0; i < 2; i++) {
-        for (size_t j = 0; j < 2; j++) {
-            for (size_t k = 0; k < 2; k++) {
-                for (size_t l = 0; l < 2; l++) {
-                    T(i,j,k,l) = l + 2*k + 4*j + 8*i;
-                }
-            }
-        }
-    }
-
-
-    Eigen::MatrixXd M_ref (4, 4);
-    M_ref <<  0,  2,  1,  3,
-              8, 10,  9, 11,
-              4,  6,  5,  7,
-             12, 14, 13, 15;
-
-
-    BOOST_CHECK(M_ref.isApprox(cpputil::linalg::toMatrix(T), 1.0e-12));
-
-
     Eigen::Tensor<double, 4> M (3, 3, 3, 3);
     for (size_t i = 0; i < 3; i++) {
         for (size_t j = 0; j < 3; j++) {
@@ -210,5 +232,9 @@ BOOST_AUTO_TEST_CASE ( toMatrix ) {
         }
     }
 
-//    cpputil::io::print(M);
+
+
+
+    Eigen::Tensor<double, 4> T_invalid (4, 3, 3, 3);
+    BOOST_CHECK_THROW(cpputil::linalg::strictLowerTriangle(T_invalid), std::invalid_argument);
 }
