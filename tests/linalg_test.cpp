@@ -115,6 +115,13 @@ BOOST_AUTO_TEST_CASE ( areEqualSetsOfEigenvectors_example ) {
 }
 
 
+BOOST_AUTO_TEST_CASE ( strictLowerTriangle_matrix_invalid ) {
+
+    Eigen::MatrixXd A_invalid (3, 4);
+    BOOST_CHECK_THROW(cpputil::linalg::strictLowerTriangle(A_invalid), std::invalid_argument);
+}
+
+
 BOOST_AUTO_TEST_CASE ( strictLowerTriangle_matrix ) {
 
     Eigen::MatrixXd A (3, 3);
@@ -141,10 +148,36 @@ BOOST_AUTO_TEST_CASE ( strictLowerTriangle_matrix ) {
 }
 
 
-BOOST_AUTO_TEST_CASE ( strictLowerTriangle_matrix_invalid ) {
+BOOST_AUTO_TEST_CASE ( fillStrictLowerTriangle_invalid ) {
 
-    Eigen::MatrixXd A_invalid (3, 4);
-    BOOST_CHECK_THROW(cpputil::linalg::strictLowerTriangle(A_invalid), std::invalid_argument);
+    Eigen::VectorXd a_invalid (4);
+    BOOST_CHECK_THROW(cpputil::linalg::fillStrictLowerTriangle(a_invalid), std::invalid_argument);  // 4 is not a triangular number
+}
+
+
+BOOST_AUTO_TEST_CASE ( fillStrictLowerTriangle ) {
+
+    Eigen::VectorXd a (3);
+    a << 1, 2, 3;
+
+    Eigen::MatrixXd A_ref (3, 3);
+    A_ref << 0, 0, 0,
+             1, 0, 0,
+             2, 3, 0;
+
+    BOOST_CHECK(A_ref.isApprox(cpputil::linalg::fillStrictLowerTriangle(a), 1.0e-12));
+
+
+    Eigen::VectorXd b (6);
+    b << 1, 2, 3, 4, 5, 6;
+
+    Eigen::MatrixXd B_ref (4, 4);
+    B_ref << 0, 0, 0, 0,
+             1, 0, 0, 0,
+             2, 4, 0, 0,
+             3, 5, 6, 0;
+
+    BOOST_CHECK(B_ref.isApprox(cpputil::linalg::fillStrictLowerTriangle(b), 1.0e-12));
 }
 
 
@@ -199,6 +232,13 @@ BOOST_AUTO_TEST_CASE ( toMatrix ) {
 }
 
 
+BOOST_AUTO_TEST_CASE ( strictLowerTriangle_tensor_invalid ) {
+
+    Eigen::Tensor<double, 4> T_invalid (4, 3, 3, 3);
+    BOOST_CHECK_THROW(cpputil::linalg::strictLowerTriangle(T_invalid), std::invalid_argument);
+}
+
+
 BOOST_AUTO_TEST_CASE ( strictLowerTriangle_tensor ) {
 
     // Create an example tensor
@@ -239,11 +279,4 @@ BOOST_AUTO_TEST_CASE ( strictLowerTriangle_tensor ) {
               66, 69, 70;  // by manual inspection, these should be the elements of the reduced matrix
 
     BOOST_CHECK(M2_ref.isApprox(cpputil::linalg::strictLowerTriangle(T2)));
-}
-
-
-BOOST_AUTO_TEST_CASE ( strictLowerTriangle_tensor_invalid ) {
-
-    Eigen::Tensor<double, 4> T_invalid (4, 3, 3, 3);
-    BOOST_CHECK_THROW(cpputil::linalg::strictLowerTriangle(T_invalid), std::invalid_argument);
 }

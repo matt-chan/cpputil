@@ -65,6 +65,13 @@ Eigen::VectorXd strictLowerTriangle(const Eigen::MatrixXd& M);
 
 
 /**
+ *  Given a vector @param a, fill and return a lower triangular matrix (in column major form) with the elements of a, and the
+ *  other elements are set to zero
+ */
+Eigen::MatrixXd fillStrictLowerTriangle(const Eigen::VectorXd& a);
+
+
+/**
  *  Reduce a rank-4 tensor @param T to and @return a 2-dimensional matrix
  *
  *  The elements of the tensor @param T are found the matrix such that

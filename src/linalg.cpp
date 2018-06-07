@@ -137,6 +137,41 @@ Eigen::VectorXd strictLowerTriangle(const Eigen::MatrixXd& M) {
 
 
 /**
+ *  Given a vector @param a, fill and return a lower triangular matrix (in column major form) with the elements of a, and the
+ *  other elements are set to zero
+ */
+Eigen::MatrixXd fillStrictLowerTriangle(const Eigen::VectorXd& a) {
+
+    // Check for valid input
+    auto N = static_cast<size_t>(a.size());  // dimension of the vector
+    double K_ = 0.5 + 0.5 * std::sqrt(1 + 8*N);  // dimension of the matrix
+    if (std::abs(K_ - std::floor(K_)) > 1.0e-12) {  // if K is not an integer, within the given precision, i.e. N is not a triangular number
+        throw std::invalid_argument("The given vector cannot be stored in the strict lower triangle of a matrix.");
+    }
+
+    // After the input checking, we are safe to cast K into size_t
+    auto K = static_cast<size_t>(K_);
+    Eigen::MatrixXd A = Eigen::MatrixXd::Zero(K, K);
+
+
+    size_t column_index = 0;
+    size_t row_index = column_index + 1;  // fill the lower triangle
+    for (size_t vector_index = 0; vector_index < N; vector_index++) {
+        A(row_index,column_index) = a(vector_index);
+
+        if (row_index == K-1) {  // -1 because of computers
+            column_index++;
+            row_index = column_index + 1;
+        } else {
+            row_index++;
+        }
+    }
+    return A;
+}
+
+
+
+/**
  *  Reduce a rank-4 tensor @param T to and @return a 2-dimensional matrix
  *
  *  The elements of the tensor @param T are found the matrix such that

@@ -17,6 +17,7 @@ namespace cpputil {
         bool **areEqualSetsOfEigenvectors**(const Eigen::MatrixXd& eigenvectors1, const Eigen::MatrixXd& eigenvectors2, double tolerance)
 
         Eigen::VectorXd **strictLowerTriangle**(const Eigen::MatrixXd& M)
+        Eigen::MatrixXd **fillStrictLowerTriangle**(const Eigen::VectorXd& a)
 
         Eigen::MatrixXd **toMatrix**(const Eigen::Tensor<double, 4>& T)
         Eigen::MatrixXd **strictLowerTriangle**(const Eigen::Tensor<double, 4>& T)
