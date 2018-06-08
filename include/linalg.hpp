@@ -55,6 +55,23 @@ bool areEqualSetsOfEigenvectors(const Eigen::MatrixXd& eigenvectors1, const Eige
 
 
 /**
+ *  Given a matrix @param M, @return the strictly lower triangular matrix (i.e. without the diagonal elements) as a
+ *  vector in column-major form.
+ *
+ *          1       -> (1, 2, 3)
+ *          2   3
+ */
+Eigen::VectorXd strictLowerTriangle(const Eigen::MatrixXd& M);
+
+
+/**
+ *  Given a vector @param a, fill and return a lower triangular matrix (in column major form) with the elements of a, and the
+ *  other elements are set to zero
+ */
+Eigen::MatrixXd fillStrictLowerTriangle(const Eigen::VectorXd& a);
+
+
+/**
  *  Reduce a rank-4 tensor @param T to and @return a 2-dimensional matrix
  *
  *  The elements of the tensor @param T are found the matrix such that
@@ -65,6 +82,15 @@ bool areEqualSetsOfEigenvectors(const Eigen::MatrixXd& eigenvectors1, const Eige
  *      n is calculated from k and l in a column-major way
  */
 Eigen::MatrixXd toMatrix(const Eigen::Tensor<double, 4>& T);
+
+
+/**
+ *  Given a rank-4 with dimensions (K,K,K,K) tensor @param T, @return the strict "lower triangle" as a matrix in column major form
+ *  The matrix indices (m,n) come from the tensor indices (i,j,k,l) and are such that:
+ *      - m is compounded in a column major way from i and j, with the restriction i>j
+ *      - n is compounded in a column major way from k and l, with the restriction k>l
+ */
+Eigen::MatrixXd strictLowerTriangle(const Eigen::Tensor<double, 4>& T);
 
 
 }  // namespace linalg
