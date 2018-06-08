@@ -194,7 +194,7 @@ Eigen::MatrixXd toMatrix(const Eigen::Tensor<double, 4>& T) {
         for (size_t i = 0; i < dims[0]; i++) {  // in column major indices, columns are contiguous, so the first of two indices changes more rapidly
 
             size_t column_index = 0;
-            for (size_t l = 0; l < dims[l]; l++) {  // "column major" ordering for column_index<-k,l so we do l first, then k
+            for (size_t l = 0; l < dims[3]; l++) {  // "column major" ordering for column_index<-k,l so we do l first, then k
                 for (size_t k = 0; k < dims[2]; k++) {  // in column major indices, columns are contiguous, so the first of two indices changes more rapidly
 
                     M(row_index,column_index) = T(i,j,k,l);
@@ -236,13 +236,13 @@ Eigen::MatrixXd strictLowerTriangle(const Eigen::Tensor<double, 4>& T) {
 
     // Calculate the compound indices and bring the elements from the tensor over into the matrix
     size_t row_index = 0;
-    for (size_t j = 0; j < dims[1]; j++) {  // "column major" ordering for row_index<-i,j so we do j first, then i
-        for (size_t i = j+1; i < dims[0]; i++) {  // in column major indices, columns are contiguous, so the first of two indices changes more rapidly
+    for (size_t j = 0; j < K; j++) {  // "column major" ordering for row_index<-i,j so we do j first, then i
+        for (size_t i = j+1; i < K; i++) {  // in column major indices, columns are contiguous, so the first of two indices changes more rapidly
                                                   // require i > j for "lower triangle"
 
             size_t column_index = 0;
-            for (size_t l = 0; l < dims[l]; l++) {  // "column major" ordering for column_index<-k,l so we do l first, then k
-                for (size_t k = l+1; k < dims[2]; k++) {  // in column major indices, columns are contiguous, so the first of two indices changes more rapidly
+            for (size_t l = 0; l < K; l++) {  // "column major" ordering for column_index<-k,l so we do l first, then k
+                for (size_t k = l+1; k < K; k++) {  // in column major indices, columns are contiguous, so the first of two indices changes more rapidly
                                                           // require l > k for "lower triangle"
 
                     M(row_index,column_index) = T(i,j,k,l);
