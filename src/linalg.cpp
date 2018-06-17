@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with GQCG-cpputil.  If not, see <http://www.gnu.org/licenses/>.
 #include "linalg.hpp"
+#include <iostream>
 
 
 
@@ -104,6 +105,157 @@ bool areEqualSetsOfEigenvectors(const Eigen::MatrixXd& eigenvectors1, const Eige
     }
 
     return true;
+}
+
+
+/**
+ *  Given a square matrix @param M, @return the strictly lower triangular matrix (i.e. without the diagonal elements) as a
+ *  vector in column-major form.
+ *
+ *          1       -> (1, 2, 3)
+ *          2   3
+ */
+Eigen::VectorXd strictLowerTriangle(const Eigen::MatrixXd& M) {
+
+    if (M.cols() != M.rows()) {
+        throw std::invalid_argument("The given matrix is not square.");
+    }
+
+    auto K = static_cast<size_t>(M.cols());  // the dimension of the matrix
+    Eigen::VectorXd m = Eigen::VectorXd::Zero((K*(K-1)/2));  // strictly lower triangle has K(K-1)/2 parameters
+
+    size_t vector_index = 0;
+    for (size_t q = 0; q < K; q++) {  // "column major" ordering for, so we do p first, then q
+        for (size_t p = q+1; p < K; p++) {  // strict lower triangle means p > q
+            m(vector_index) = M(p,q);
+            vector_index++;
+        }
+    }
+
+    return m;
+}
+
+
+/**
+ *  Given a vector @param a, fill and return a lower triangular matrix (in column major form) with the elements of a, and the
+ *  other elements are set to zero
+ */
+Eigen::MatrixXd fillStrictLowerTriangle(const Eigen::VectorXd& a) {
+
+    // Check for valid input
+    auto N = static_cast<size_t>(a.size());  // dimension of the vector
+    double K_ = 0.5 + 0.5 * std::sqrt(1 + 8*N);  // dimension of the matrix
+    if (std::abs(K_ - std::floor(K_)) > 1.0e-12) {  // if K is not an integer, within the given precision, i.e. N is not a triangular number
+        throw std::invalid_argument("The given vector cannot be stored in the strict lower triangle of a matrix.");
+    }
+
+    // After the input checking, we are safe to cast K into size_t
+    auto K = static_cast<size_t>(K_);
+    Eigen::MatrixXd A = Eigen::MatrixXd::Zero(K, K);
+
+
+    size_t column_index = 0;
+    size_t row_index = column_index + 1;  // fill the lower triangle
+    for (size_t vector_index = 0; vector_index < N; vector_index++) {
+        A(row_index,column_index) = a(vector_index);
+
+        if (row_index == K-1) {  // -1 because of computers
+            column_index++;
+            row_index = column_index + 1;
+        } else {
+            row_index++;
+        }
+    }
+    return A;
+}
+
+
+
+/**
+ *  Reduce a rank-4 tensor @param T to and @return a 2-dimensional matrix
+ *
+ *  The elements of the tensor @param T are found the matrix such that
+ *      M(m,n) = T(i,j,k,l)
+ *
+ *  in which
+ *      m is calculated from i and j in a column-major way
+ *      n is calculated from k and l in a column-major way
+ */
+Eigen::MatrixXd toMatrix(const Eigen::Tensor<double, 4>& T) {
+
+    // Initialize the resulting matrix
+    const auto& dims = T.dimensions();
+    Eigen::MatrixXd M (dims[0]*dims[1], dims[2]*dims[3]);
+
+
+    // Calculate the compound indices and bring the elements from the tensor over into the matrix
+    size_t row_index = 0;
+    for (size_t j = 0; j < dims[1]; j++) {  // "column major" ordering for row_index<-i,j so we do j first, then i
+        for (size_t i = 0; i < dims[0]; i++) {  // in column major indices, columns are contiguous, so the first of two indices changes more rapidly
+
+            size_t column_index = 0;
+            for (size_t l = 0; l < dims[3]; l++) {  // "column major" ordering for column_index<-k,l so we do l first, then k
+                for (size_t k = 0; k < dims[2]; k++) {  // in column major indices, columns are contiguous, so the first of two indices changes more rapidly
+
+                    M(row_index,column_index) = T(i,j,k,l);
+
+                    column_index++;
+                }
+            }
+
+            row_index++;
+        }
+    }
+
+    return M;
+}
+
+
+/**
+ *  Given a rank-4 with dimensions (K,K,K,K) tensor @param T, @return the strict "lower triangle" as a matrix in column major form
+ *  The matrix indices (m,n) come from the tensor indices (i,j,k,l) and are such that:
+ *      - m is compounded in a column major way from i and j, with the restriction i>j
+ *      - n is compounded in a column major way from k and l, with the restriction k>l
+ */
+Eigen::MatrixXd strictLowerTriangle(const Eigen::Tensor<double, 4>& T) {
+
+    // Check for invalid input
+    const auto& dims = T.dimensions();
+
+    auto K = static_cast<size_t> (dims[0]);
+    for (size_t i = 1; i < 4; i++) {
+        if (K != dims[i]) {
+            throw std::invalid_argument("The given tensor does not have equal dimensions in each rank.");
+        }
+    }
+
+
+    // Initialize the resulting matrix
+    Eigen::MatrixXd M (K*(K-1)/2, K*(K-1)/2);
+
+
+    // Calculate the compound indices and bring the elements from the tensor over into the matrix
+    size_t row_index = 0;
+    for (size_t j = 0; j < K; j++) {  // "column major" ordering for row_index<-i,j so we do j first, then i
+        for (size_t i = j+1; i < K; i++) {  // in column major indices, columns are contiguous, so the first of two indices changes more rapidly
+                                                  // require i > j for "lower triangle"
+
+            size_t column_index = 0;
+            for (size_t l = 0; l < K; l++) {  // "column major" ordering for column_index<-k,l so we do l first, then k
+                for (size_t k = l+1; k < K; k++) {  // in column major indices, columns are contiguous, so the first of two indices changes more rapidly
+                                                          // require l > k for "lower triangle"
+
+                    M(row_index,column_index) = T(i,j,k,l);
+
+                    column_index++;
+                }
+            }
+
+            row_index++;
+        }
+    }
+
+    return M;
 }
 
 
