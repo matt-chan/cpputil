@@ -45,6 +45,21 @@ void readArrayFromFile(const std::string& filename, Eigen::MatrixXd& M);
 void readArrayFromFile(const std::string& filename, Eigen::Tensor<double, 4>& T);
 
 /**
+ *  Print the contents of a matrix @param M in a fashionable way
+ */
+void print(const Eigen::MatrixXd& M);
+
+/**
+ *  Print the contents of a matrix @param M to the @param output_filestream
+ */
+void print(const Eigen::MatrixXd& M, std::ofstream& output_filestream);
+
+/**
+ *  Print the contents of a rank-four tensor @param: T to the @param output_filestream
+ */
+void print(const Eigen::Tensor<double, 4>& T, std::ofstream& output_filestream);
+
+/**
  *  Print the contents of a rank-four tensor @param: T in a fashionable way.
  */
 void print(const Eigen::Tensor<double, 4>& T);
