@@ -134,9 +134,36 @@ void readArrayFromFile(const std::string& filename, Eigen::Tensor<double, 4>& T)
 
 
 /**
+ *  Print the contents of a matrix @param M in a fashionable way
+ */
+void print(const Eigen::MatrixXd& M) {
+
+    for (size_t i = 0; i < M.rows(); i++) {
+        for (size_t j = 0; j < M.cols(); j++) {
+            std::cout << i << ' ' << j << "  " << M(i,j) << std::endl;
+        }
+    }
+}
+
+
+/**
+ *  Print the contents of a matrix @param M to the @param output_filestream
+ */
+void print(const Eigen::MatrixXd& M, std::ofstream& output_filestream) {
+
+    for (size_t i = 0; i < M.rows(); i++) {
+        for (size_t j = 0; j < M.cols(); j++) {
+            output_filestream << i << ' ' << j << "  " << M(i,j) << std::endl;
+        }
+    }
+}
+
+
+/**
  *  Print the contents of a rank-four tensor @param: T in a fashionable way.
  */
 void print(const Eigen::Tensor<double, 4>& T) {
+
     auto dim1 = static_cast<size_t>(T.dimension(0));
     auto dim2 = static_cast<size_t>(T.dimension(1));
     auto dim3 = static_cast<size_t>(T.dimension(2));
@@ -152,6 +179,29 @@ void print(const Eigen::Tensor<double, 4>& T) {
         }
     }
 }
+
+
+/**
+ *  Print the contents of a rank-four tensor @param: T to the @param output_filestream
+ */
+void print(const Eigen::Tensor<double, 4>& T, std::ofstream& output_filestream) {
+
+    auto dim1 = static_cast<size_t>(T.dimension(0));
+    auto dim2 = static_cast<size_t>(T.dimension(1));
+    auto dim3 = static_cast<size_t>(T.dimension(2));
+    auto dim4 = static_cast<size_t>(T.dimension(3));
+
+    for (size_t i = 0; i < dim1; i++) {
+        for (size_t j = 0; j < dim2; j++) {
+            for (size_t k = 0; k < dim3; k++) {
+                for (size_t l = 0; l < dim4; l++) {
+                    output_filestream << i << ' ' << j << ' ' << k << ' ' << l << "  " << T(i,j,k,l) << std::endl;
+                }
+            }
+        }
+    }
+}
+
 
 
 }  // namespace io
