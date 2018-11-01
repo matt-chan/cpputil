@@ -13,8 +13,12 @@ if(NOT LIBRARY_NAME)
 endif()
 
 # We want to make a static library
-set(LIBRARY_TYPE STATIC)
-set(EXPORT_TYPE ARCHIVE)
+if(NOT LIBRARY_TYPE)
+    set(LIBRARY_TYPE STATIC)
+    set(EXPORT_TYPE ARCHIVE)
+elseif(LIBRARY_TYPE STREQUAL SHARED)
+    set(EXPORT_TYPE LIBRARY)
+endif()
 
 
 

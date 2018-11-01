@@ -1,0 +1,24 @@
+package:
+  name: cpputil
+  version: 1.5.0
+
+source:
+  path: ../../
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - cmake
+  host:
+    - eigen >=3.3.4
+    - boost >=1.6.5
+  run: []
+test:
+  commands:
+    - conda inspect linkages cpputil
+
+about:
+  home: https://github.com/GQCG/cpputil
+  license: LGPL
+
