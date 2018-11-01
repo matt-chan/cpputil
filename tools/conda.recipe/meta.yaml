@@ -5,6 +5,10 @@ package:
 source:
   path: ../../
 
+build:
+  run_exports:
+    - cpputil
+
 requirements:
   build:
     - {{ compiler('c') }}
