@@ -6,4 +6,4 @@ target_include_directories(${TEST_NAME} PUBLIC ${Boost_INCLUDE_DIRS})
 
 # Include this project
 target_include_directories(${TEST_NAME} PRIVATE ${PROJECT_INCLUDE_FOLDER})
-target_link_libraries(${TEST_NAME} PRIVATE ${LIBRARY_NAME})
+target_link_libraries(${TEST_NAME} PRIVATE ${LIBRARY_NAME} rt)
