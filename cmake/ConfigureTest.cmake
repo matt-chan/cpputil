@@ -8,6 +8,6 @@ target_link_libraries(${TEST_NAME} PRIVATE ${LIBRARY_NAME})
 target_include_directories(${TEST_NAME} PRIVATE ${Boost_INCLUDE_DIRS})
 target_link_libraries(${TEST_NAME} PRIVATE ${Boost_LIBRARIES})
 
-# Include Eigen
-target_include_directories(${TEST_NAME} PRIVATE ${EIGEN3_INCLUDE_DIR})
+# Include Eigen3
+target_link_libraries(${LIBRARY_NAME} PUBLIC Eigen3::Eigen)
 
